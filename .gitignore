@@ -1,0 +1,15 @@
+# Binaries for programs and plugins
+/.vscode
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+._*
+*~
+*.orig
+.*.swp
+*.test
+
+
+
