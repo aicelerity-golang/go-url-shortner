@@ -18,15 +18,16 @@ func init() {
 }
 
 // get the short URL from Cache if availabe.
-func getUrlFromCache(longUrl string) {
+func getUrlFromCache(longUrl string) (string, bool) {
 
-	shortUrl := urlData[longUrl]
-	log.Println("The Short URL is : ", shortUrl)
+	shortUrl, ok := urlData[longUrl]
+	// log.Println("The Short URL is : ", shortUrl)
+	return shortUrl, ok
 }
 
 // Set the short URL to Cache
 func setUrlToCache(longUrl, shortUrl string) {
 
 	urlData[longUrl] = shortUrl
-	log.Println("The Short URL is stored: ", shortUrl)
+	log.Printf("The Short URL ..%s.. is stored in Cache", shortUrl)
 }
