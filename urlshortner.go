@@ -20,9 +20,9 @@ func urlEncoding(data string) string {
 	return string(encoded)
 }
 
-// Generate a Shortened URL for the given URL
-func GenerateShortUrl(initialUrl string) string {
-	urlHashBytes := sha256Hash(initialUrl)
+// Generate a Shortened URL for the given input URL
+func GenerateShortUrl(inputUrl string) string {
+	urlHashBytes := sha256Hash(inputUrl)
 	shortURL := urlEncoding(string(urlHashBytes))
 	fmt.Println(shortURL[:10])
 	return shortURL[:10]
