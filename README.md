@@ -19,6 +19,7 @@ $git clone git@github.com:aicelerity-golang/go-url-shortner.git
 $cd  cd go-url-shortner
 $go mod tidy
 $go mod verify
+$go run .
 ```
 The application GO URL Shortner will start and run on port 5000. You will see below log if app is running successful.
 
