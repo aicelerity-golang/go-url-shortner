@@ -16,7 +16,7 @@
 
 ``` shell
 $git clone git@github.com:aicelerity-golang/go-url-shortner.git
-$cd  cd go-url-shortner
+$cd go-url-shortner
 $go mod tidy
 $go mod verify
 $go run .
