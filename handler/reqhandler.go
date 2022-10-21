@@ -16,6 +16,7 @@ type shortUrlCreation struct {
 // Create the Short URL on API Request using Fle
 func CreateShortUrlFile(ctx *gin.Context) {
 	var urlCreation shortUrlCreation
+	host := "http://localhost:5000/"
 	if err := ctx.ShouldBindJSON(&urlCreation); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -25,8 +26,8 @@ func CreateShortUrlFile(ctx *gin.Context) {
 		log.Printf("From File ..%s..", shortUrl)
 
 		ctx.JSON(200, gin.H{
-			"message":   "Short Url Created successfully",
-			"short-url": shortUrl,
+			"message":   "Here comes the Short Url...",
+			"short-url": host + shortUrl,
 		})
 	} else {
 		shortUrl = utils.GenerateShortUrl(urlCreation.LongUrl)
@@ -34,8 +35,8 @@ func CreateShortUrlFile(ctx *gin.Context) {
 		setUrlToStore(urlCreation.LongUrl, shortUrl)
 
 		ctx.JSON(200, gin.H{
-			"message":   "Short Url Created successfully",
-			"short-url": shortUrl,
+			"message":   "Here comes the Short Url...",
+			"short-url": host + shortUrl,
 		})
 	}
 
