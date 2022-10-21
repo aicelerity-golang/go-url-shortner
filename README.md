@@ -1,6 +1,5 @@
 ## GO URL Shortner
- GO URL Shortner is a  URL shortener service that will accept a URL as an argument over a REST API and return a shortened URL as a result
-
+GO URL Shortner is a  URL shortener service that will accept a URL as an argument over a REST API and return a shortened URL as a result.
 
 
 ## Requirements
@@ -10,7 +9,7 @@
 * **Docker:**  (optional)
 
 
-## Installation and Running the service
+## Installation and Running the  URL shortener service
 
 #### Option 1:  Cloning from git hub and installing on systems with  requirements mentioned above.
 
@@ -21,15 +20,36 @@ $go mod tidy
 $go mod verify
 $go run .
 ```
-The application GO URL Shortner will start and run on port 5000. You will see below log if app is running successful.
+Or we could use go build instead of go run like below.
+``` shell
+$go build .
+$./go-url-shortner
+```
+The application GO URL Shortner will start and run on port 5000. We can see below log once the app is running successful.
 
 ``` shell
 [GIN-debug] Listening and serving HTTP on :5000
 
 ```
-#### Option 2: Using Docker
+#### Option 2: Using Docker 
+Docker can be download from [here](https://docs.docker.com/get-started/#download-and-install-docker).
+Docker or Docker Desktop need to be installed as a prerequisite for below steps.
 
-### Getting the Short Url Service
+Follow below steps to get the application running as a container.
+
+``` shell
+docker pull rajeshmathewk/go-url-router:latest
+docker run -d -p 5000:5000 -it --name go-url-router rajeshmathewk/go-url-router
+docker ps
+docker logs -f  <container ID>
+```
+We can see below log once the app is running in container.
+``` shell
+[GIN-debug] Listening and serving HTTP on :5000
+
+```
+
+### Requesting the Short Url Service
 
 * REST API `/url-shortner ` running on localhost port 5000.
 
@@ -40,9 +60,7 @@ Given below an example of getting the Short URL using curl command.
 $ curl --request POST --data '{"long-url": "https://blogs.blackberry.com/en/2022/10/bianlian-ransomware-encrypts-files-in-the-blink-of-an-eye"}'  http://localhost:5000/url-shortner
 
 ```
-
-If it is successfull, you should get below output.
-
+If the URL Shortner service is running we should get below output.
 
 ``` shell
 {"message":"Here comes the Short Url...","short-url":"http://localhost:5000/RX9wbW9WtQ"}
@@ -50,17 +68,32 @@ If it is successfull, you should get below output.
 ```
 #### Option 2. Using Postman
 
-Open Post man App.
-Selct New
-Select  HTTP Request
-Under Request select POST from drop down
-Enter the URL (http://localhost:5000/url-shortner)
-Select Body then raw amd add the json ( example: {"long-url": "https://blogs.blackberry.com/en/2022/10/bianlian-ransomware-encrypts-files-in-the-blink-of-an-eye"
-}) 
-Click Send and you should get the Short URL as response.
+Open Postman App. Navigate to  New ->  HTTP Request. Under Request select POST from drop down . Enter the URL: (http://localhost:5000/url-shortner).
+
+Select Body -> Then raw and add the json data  example: 
+{"long-url": "https://blogs.blackberry.com/en/2022/10/bianlian-ransomware-encrypts-files-in-the-blink-of-an-eye"} . Click Send and we should get the Short URL as json response shown below.
+
+``` shell
+{
+    "message": "Here comes the Short Url...",
+    "short-url": "http://localhost:5000/RX9wbW9WtQ"
+}
+```
 
 
 ### Source Files
 
+*  `main.go`           : will handle the HTTP requests using Gin Framework
 
-### Tests
+* ***utils*** 
+  - `urlshortner.go`   : does the shortnening of given Long URL; hash and encode to a short URL.
+  
+* ***handler***  
+  - `filehandler.go`   : will handle the File operations; reading and writing of URLs in File.
+  - `reqhandler.go`    : will handle the API Request Service; request and response of URL Service.
+  - `cachehandler.go`  : does the caching of URLs; reading and writing of URLs in memory.
+
+
+### Tests 
+*  `handler/filehandler.go`  : runs the tests for File handler Operations.
+*  `utils/urlshortner.go`    : runs the tests for URL shortner ; genrerating a Short URL.
