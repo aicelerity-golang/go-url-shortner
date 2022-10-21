@@ -1,9 +1,8 @@
-package main
+package utils
 
 import (
 	"crypto/sha256"
 	"encoding/base64"
-	"fmt"
 )
 
 // Hash the input string to get a unique value
@@ -24,6 +23,6 @@ func urlEncoding(data string) string {
 func GenerateShortUrl(inputUrl string) string {
 	urlHashBytes := sha256Hash(inputUrl)
 	shortURL := urlEncoding(string(urlHashBytes))
-	fmt.Println(shortURL[:10])
+	// log.Println(shortURL[:10])
 	return shortURL[:10]
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/aicelerity-golang/go-url-shortner/handler"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,11 +14,10 @@ func main() {
 
 	// REST API for URL Shortner
 	router.POST("/url-shortner", func(ctx *gin.Context) {
-		createShortUrl(ctx)
+		handler.CreateShortUrlFile(ctx)
 	})
 
-	
-	/* 	Basic Web API to get the Long URL and return the Short URL */
+	/* 	Basic Web Service to get the Long URL and return the Short URL */
 	// Publish the static files
 	// router.Static("/public", "./public")
 

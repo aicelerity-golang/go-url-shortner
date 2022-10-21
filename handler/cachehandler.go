@@ -1,4 +1,4 @@
-package main
+package handler
 
 import "log"
 
@@ -12,9 +12,6 @@ func init() {
 
 	urlData[bigUrl] = shortUrl
 
-	// for key, value := range urlData {
-	// 	log.Println("Key:", key, "Value:", value)
-	// }
 }
 
 // get the short URL from Cache if availabe.
