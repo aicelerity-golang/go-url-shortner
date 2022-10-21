@@ -49,7 +49,7 @@ We can see below log once the app is running in container.
 
 ```
 
-### Requesting the Short Url Service
+### Requesting the URL shortener Service
 
 * REST API `/url-shortner ` running on localhost port 5000.
 
@@ -68,7 +68,7 @@ If the URL Shortner service is running we should get below output.
 ```
 #### Option 2. Using Postman
 
-Open Postman App. Navigate to  New ->  HTTP Request. Under Request select POST from drop down . Enter the URL: (http://localhost:5000/url-shortner).
+Open Postman App. Navigate to  New ->  HTTP Request. Under Request select POST from drop down . Enter the URL: http://localhost:5000/url-shortner.
 
 Select Body -> Then raw and add the json data  example: 
 {"long-url": "https://blogs.blackberry.com/en/2022/10/bianlian-ransomware-encrypts-files-in-the-blink-of-an-eye"} . Click Send and we should get the Short URL as json response shown below.
