@@ -95,5 +95,5 @@ Select Body -> Then raw and add the json data  example:
 
 
 ### Tests 
-*  `handler/filehandler.go`  : runs the tests for File handler Operations.
-*  `utils/urlshortner.go`    : runs the tests for URL shortner ; genrerating a Short URL.
+*  `handler/filehandler_test.go`  : runs the tests for File handler Operations.
+*  `utils/urlshortner_test.go`    : runs the tests for URL shortner ; genrerating a Short URL.
