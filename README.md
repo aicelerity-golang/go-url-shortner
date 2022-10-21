@@ -1,4 +1,5 @@
-# GO URL Shortner is a  URL shortener service that will accept a URL as an argument over a REST API and return a shortened URL as a result
+## GO URL Shortner
+ GO URL Shortner is a  URL shortener service that will accept a URL as an argument over a REST API and return a shortened URL as a result
 
 
 
@@ -11,7 +12,7 @@
 
 ## Installation and Running the service
 
-Option 1:  Cloning from git hub and installing on systems with  requirements mentioned above.
+#### Option 1:  Cloning from git hub and installing on systems with  requirements mentioned above.
 
 ``` shell
 $git clone git@github.com:aicelerity-golang/go-url-shortner.git
@@ -25,13 +26,13 @@ The application GO URL Shortner will start and run on port 5000. You will see be
 [GIN-debug] Listening and serving HTTP on :5000
 
 ```
-Option 2: Using Docker
+#### Option 2: Using Docker
 
 ### Getting the Short Url Service
 
 * REST API `/url-shortner ` running on localhost port 5000.
 
-# Option 1. Using curl command
+#### Option 1. Using curl command
 Given below an example of getting the Short URL using curl command.
 
 ``` shell
@@ -46,7 +47,7 @@ If it is successfull, you should get below output.
 {"message":"Here comes the Short Url...","short-url":"http://localhost:5000/RX9wbW9WtQ"}
 
 ```
-# Option 2. Using Postman
+#### Option 2. Using Postman
 
 Open Post man App.
 Selct New
