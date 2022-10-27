@@ -17,6 +17,10 @@ func main() {
 		handler.CreateShortUrlFile(ctx)
 	})
 
+	router.GET("/:shorturl", func (ctx *gin.Context)  {
+		handler.GetLongURLfromFile(ctx)
+	} )
+
 	/* 	Basic Web Service to get the Long URL and return the Short URL */
 	// Publish the static files
 	// router.Static("/public", "./public")

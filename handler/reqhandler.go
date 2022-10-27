@@ -8,6 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const host = "http://localhost:5000/"
+
 // Define the LongUrl as struct
 type shortUrlCreation struct {
 	LongUrl string `json:"long-url" binding:"required"`
@@ -16,7 +18,7 @@ type shortUrlCreation struct {
 // Create the Short URL on API Request using Fle
 func CreateShortUrlFile(ctx *gin.Context) {
 	var urlCreation shortUrlCreation
-	host := "http://localhost:5000/"
+
 	if err := ctx.ShouldBindJSON(&urlCreation); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -37,6 +39,25 @@ func CreateShortUrlFile(ctx *gin.Context) {
 		ctx.JSON(200, gin.H{
 			"message":   "Here comes the Short Url...",
 			"short-url": host + shortUrl,
+		})
+	}
+
+}
+
+func GetLongURLfromFile(ctx *gin.Context) {
+	// var urlCreation shortUrlCreation
+
+	shortURL := ctx.Param("shorturl")
+
+	if longUrl, ok := GetLongUrlFromStore(shortURL); ok {
+		// log.Printf("From File ..%s..", longUrl)
+
+		ctx.Redirect(302, longUrl)
+
+	} else {
+
+		ctx.JSON(200, gin.H{
+			"message": "The Short URL you entered is not in Store",
 		})
 	}
 
