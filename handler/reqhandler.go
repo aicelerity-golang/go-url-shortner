@@ -11,20 +11,20 @@ import (
 const host = "http://localhost:5000/"
 
 // Define the LongUrl as struct
-type shortUrlCreation struct {
+type Rurldata struct {
 	LongUrl string `json:"long-url" binding:"required"`
 }
 
 // Create the Short URL on API Request using Fle
-func CreateShortUrlFile(ctx *gin.Context) {
-	var urlCreation shortUrlCreation
+func GetShortUrlFile(ctx *gin.Context) {
+	var inputURL Rurldata
 
-	if err := ctx.ShouldBindJSON(&urlCreation); err != nil {
+	if err := ctx.ShouldBindJSON(&inputURL); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if shortUrl, ok := GetUrlFromStore(urlCreation.LongUrl); ok {
+	if shortUrl, ok := getShortUrlFromStore(inputURL.LongUrl); ok {
 		log.Printf("From File ..%s..", shortUrl)
 
 		ctx.JSON(200, gin.H{
@@ -32,9 +32,9 @@ func CreateShortUrlFile(ctx *gin.Context) {
 			"short-url": host + shortUrl,
 		})
 	} else {
-		shortUrl = utils.GenerateShortUrl(urlCreation.LongUrl)
+		shortUrl = utils.GenerateShortUrl(inputURL.LongUrl)
 		log.Printf("Created New ..%s..", shortUrl)
-		setUrlToStore(urlCreation.LongUrl, shortUrl)
+		setShortUrlToStore(inputURL.LongUrl, shortUrl)
 
 		ctx.JSON(200, gin.H{
 			"message":   "Here comes the Short Url...",
@@ -44,12 +44,12 @@ func CreateShortUrlFile(ctx *gin.Context) {
 
 }
 
-func GetLongURLfromFile(ctx *gin.Context) {
+func GetLongURLFile(ctx *gin.Context) {
 	// var urlCreation shortUrlCreation
 
 	shortURL := ctx.Param("shorturl")
 
-	if longUrl, ok := GetLongUrlFromStore(shortURL); ok {
+	if longUrl, ok := getLongUrlFromStore(shortURL); ok {
 		// log.Printf("From File ..%s..", longUrl)
 
 		ctx.Redirect(302, longUrl)
@@ -64,29 +64,29 @@ func GetLongURLfromFile(ctx *gin.Context) {
 }
 
 // Create the Short URL on API Request using Cache
-// func CreateShortUrlCache(ctx *gin.Context) {
-// 	var urlCreation shortUrlCreation
-// 	if err := ctx.ShouldBindJSON(&urlCreation); err != nil {
-// 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
+func GetShortUrlCache(ctx *gin.Context) {
+	var inputURL Rurldata
+	if err := ctx.ShouldBindJSON(&inputURL); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-// 	if shortUrl, ok := getUrlFromCache(urlCreation.LongUrl); ok {
-// 		log.Printf("From Cache ..%s..", shortUrl)
+	if shortUrl, ok := getShortUrlFromCache(inputURL.LongUrl); ok {
+		log.Printf("From Cache ..%s..", shortUrl)
 
-// 		ctx.JSON(200, gin.H{
-// 			"message":   "Short Url Created successfully",
-// 			"short-url": shortUrl,
-// 		})
-// 	} else {
-// 		shortUrl = GenerateShortUrl(urlCreation.LongUrl)
-// 		log.Printf("Created New ..%s..", shortUrl)
-// 		setUrlToCache(urlCreation.LongUrl, shortUrl)
+		ctx.JSON(200, gin.H{
+			"message":   "Short Url Created successfully",
+			"short-url": shortUrl,
+		})
+	} else {
+		shortUrl = utils.GenerateShortUrl(inputURL.LongUrl)
+		log.Printf("Created New ..%s..", shortUrl)
+		setShortUrlToCache(inputURL.LongUrl, shortUrl)
 
-// 		ctx.JSON(200, gin.H{
-// 			"message":   "Short Url Created successfully",
-// 			"short-url": shortUrl,
-// 		})
-// 	}
+		ctx.JSON(200, gin.H{
+			"message":   "Short Url Created successfully",
+			"short-url": shortUrl,
+		})
+	}
 
-// }
+}

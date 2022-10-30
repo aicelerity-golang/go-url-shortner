@@ -2,29 +2,29 @@ package handler
 
 import "log"
 
-var urlData = make(map[string]string)
+var cURLData = make(map[string]string)
 
-// Initialise the Map - urlData with some data
+// Initialise the Map - cURLData with some data
 func init() {
 
 	var bigUrl = "https://blogs.blackberry.com/en/2022/10/bianlian-ransomware-encrypts-files-in-the-blink-of-an-eye"
 	var shortUrl = "RX9wbW9WtQ"
 
-	urlData[bigUrl] = shortUrl
+	cURLData[bigUrl] = shortUrl
 
 }
 
 // get the short URL from Cache if availabe.
-func getUrlFromCache(longUrl string) (string, bool) {
+func getShortUrlFromCache(longUrl string) (string, bool) {
 
-	shortUrl, ok := urlData[longUrl]
+	shortUrl, ok := cURLData[longUrl]
 	// log.Println("The Short URL is : ", shortUrl)
 	return shortUrl, ok
 }
 
 // Set the short URL to Cache
-func setUrlToCache(longUrl, shortUrl string) {
+func setShortUrlToCache(longUrl, shortUrl string) {
 
-	urlData[longUrl] = shortUrl
+	cURLData[longUrl] = shortUrl
 	log.Printf("The Short URL ..%s.. is stored in Cache", shortUrl)
 }

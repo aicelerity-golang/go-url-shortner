@@ -16,22 +16,20 @@ type Nurldata struct {
 }
 
 // Get the Short Url from Store
-func GetUrlFromStore(longUrl string) (string, bool) {
+func getShortUrlFromStore(longUrl string) (string, bool) {
 
 	ok := false
-	shortUrl := GetShortUrlFromFile(longUrl)
-	// log.Printf("The Short URL is : %s", shortUrl)
+	shortUrl := getUrlFromFile(longUrl)
 	if shortUrl != "" {
 		ok = true
 	}
 	return shortUrl, ok
 }
 
-func GetLongUrlFromStore(shortURL string) (string, bool) {
+func getLongUrlFromStore(shortURL string) (string, bool) {
 
 	ok := false
-	longUrl := GetLongUrlFromFile(shortURL)
-	// log.Printf("The Short URL is : %s", shortUrl)
+	longUrl := getUrlFromFile(shortURL)
 	if longUrl != "" {
 		ok = true
 	}
@@ -39,7 +37,7 @@ func GetLongUrlFromStore(shortURL string) (string, bool) {
 }
 
 // Update the  Short Url in Store
-func setUrlToStore(longUrl, shortUrl string) {
+func setShortUrlToStore(longUrl, shortUrl string) {
 
 	urls := urlFileReader()
 	urlFileWriter(urls, longUrl, shortUrl)
@@ -48,9 +46,7 @@ func setUrlToStore(longUrl, shortUrl string) {
 
 // Reads the file and return the Short URL
 
-func GetShortUrlFromFile(longUrl string) string {
-
-	stride := 1024
+func getUrlFromFile(url string) string {
 
 	f, err := os.Open("urldata.txt")
 	if err != nil {
@@ -59,9 +55,9 @@ func GetShortUrlFromFile(longUrl string) string {
 	}
 	defer f.Close()
 
-	buf := make([]byte, 0, stride)
+	buf := make([]byte, 0, 1024)
 	r := bufio.NewReader(f)
-	var shortUrl string
+	var foundUrl string
 	for {
 		n, err := io.ReadFull(r, buf[:cap(buf)])
 		buf = buf[:n]
@@ -75,77 +71,33 @@ func GetShortUrlFromFile(longUrl string) string {
 			}
 		}
 
-		// content, err := os.ReadFile("urldata.txt")
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
 		var urls []Nurldata
-
 		// Unmarshall the data
 		err = json.Unmarshal(buf, &urls)
 		if err != nil {
 			log.Fatal(err)
 		}
-
-		for i := 0; i < len(urls); i++ {
-			if urls[i].NlongUrl == longUrl {
-				// log.Println(urls[i].NshortUrl)
-				shortUrl = urls[i].NshortUrl
-			}
-		}
-
+		foundUrl = searchURL(urls, url)
 	}
-	return shortUrl
+	return foundUrl
 }
 
-func GetLongUrlFromFile(shortUrl string) string {
-
-	stride := 1024
-
-	f, err := os.Open("urldata.txt")
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return ""
-	}
-	defer f.Close()
-
-	buf := make([]byte, 0, stride)
-	r := bufio.NewReader(f)
-	var longUrl string
-	for {
-		n, err := io.ReadFull(r, buf[:cap(buf)])
-		buf = buf[:n]
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-			if err != io.ErrUnexpectedEOF {
-				fmt.Fprintln(os.Stderr, err)
-				break
-			}
-		}
-
-		// content, err := os.ReadFile("urldata.txt")
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-		var urls []Nurldata
-
-		// Unmarshall the data
-		err = json.Unmarshal(buf, &urls)
-		if err != nil {
-			log.Fatal(err)
-		}
-
+func searchURL(urls []Nurldata, url string) string {
+	var foundUrl string
+	if len(url) <= 10 {
 		for i := 0; i < len(urls); i++ {
-			if urls[i].NshortUrl == shortUrl {
-				// log.Println(urls[i].NshortUrl)
-				longUrl = urls[i].NlongUrl
+			if urls[i].NshortUrl == url {
+				foundUrl = urls[i].NlongUrl
 			}
 		}
-
+	} else {
+		for i := 0; i < len(urls); i++ {
+			if urls[i].NlongUrl == url {
+				foundUrl = urls[i].NshortUrl
+			}
+		}
 	}
-	return longUrl
+	return foundUrl
 }
 
 // Reads the file and return all urls

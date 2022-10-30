@@ -14,12 +14,13 @@ func main() {
 
 	// REST API for URL Shortner
 	router.POST("/url-shortner", func(ctx *gin.Context) {
-		handler.CreateShortUrlFile(ctx)
+		handler.GetShortUrlFile(ctx)
 	})
 
-	router.GET("/:shorturl", func (ctx *gin.Context)  {
-		handler.GetLongURLfromFile(ctx)
-	} )
+	// REST API for Redirect to Long URL
+	router.GET("/:shorturl", func(ctx *gin.Context) {
+		handler.GetLongURLFile(ctx)
+	})
 
 	/* 	Basic Web Service to get the Long URL and return the Short URL */
 	// Publish the static files
